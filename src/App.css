@@ -1,0 +1,30 @@
+body { background-color: #ecd7c9b4; z-index: -999;}
+input:focus { outline: none; }
+
+.ff-ubuntu { font-family: 'Ubuntu', sans-serif; }
+.ff-lobster {font-family: 'Lobster Two', cursive;}
+.fs-6-m { font-size: 6rem; }
+.fs-4-m { font-size: 4rem; }
+
+.m-auto { margin: auto }
+.w40-m { width: 40rem; }
+.h40-m { height: 40rem; }
+.w-one-eighth { width:  12.5%; }
+.h-one-eighth { height:  12.5%; }
+.v-50 { top: 50%; bottom: 50% }
+.top-3-m { top: 3rem; }
+
+.usn { user-select: none; }
+.dn { display: none; }
+.nz-1 { z-index: -1;}
+.nz-9 { z-index: -9;}
+
+.bg-dark-grid { background-color: #97d8e4 }
+.bg-light-grid { background-color: #f4f4f4 }
+.bg-light-emerald { background-color: rgb(173,189,143) }
+.bg-kanzo { background-color: rgba(252, 159, 77, 0.603) }
+.bg-nae { background-color: #86C166 }
+.bg-kurenai { background-color: #CB1B45 }
+
+#Name:focus { outline: none; }
+#Name::placeholder { color:#999999 }
