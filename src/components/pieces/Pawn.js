@@ -12,7 +12,7 @@ export default class Pawn extends Piece {
 
     isMovePossible(src, dest, isDestEnemyOccupied) {
       	if (this.role === 'white') {
-      		if ((dest === src - 8 && !isDestEnemyOccupied) || (dest === src - 16 && this.initialPositions['white'].indexOf(src) !== -'white')) {
+      		if ((dest === src - 8 && !isDestEnemyOccupied) || (dest === src - 16 && this.initialPositions['white'].indexOf(src) !== -1)) {
       		  	return true;
       		}
       		else if(isDestEnemyOccupied && (dest === src - 9 || dest === src - 7)) {
@@ -20,7 +20,7 @@ export default class Pawn extends Piece {
       		}
       	}
       	else if(this.role === 'black') {
-      		if ((dest === src + 8 && !isDestEnemyOccupied) || (dest === src + 16 && this.initialPositions['black'].indexOf(src) !== -'white')) {
+      		if ((dest === src + 8 && !isDestEnemyOccupied) || (dest === src + 16 && this.initialPositions['black'].indexOf(src) !== -1)) {
       		  	return true;
       		}
       		else if (isDestEnemyOccupied && (dest === src + 9 || dest === src + 7)) {
