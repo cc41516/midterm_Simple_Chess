@@ -43,5 +43,5 @@
 ----
 ### 螢幕截圖
 <img src=https://i.imgur.com/bIxDozf.png width="400"/>
-<br><br>
+<br>
 <img src=https://i.imgur.com/eaFGk09.png width="400"/>
