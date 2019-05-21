@@ -11,11 +11,14 @@ export default class Room extends Component {
             grids: [],
             turn: '',
             sourceSelection: -1,
-            status: '',
+            status: ''
         }
         this.props.socket.emit('getRoomInfo', this.props.roomID);
-        this.props.socket.on(`getRoomInfo${this.props.roomID}`, (roomInfo) => {
+        this.props.socket.once(`getRoomInfo${this.props.roomID}`, (roomInfo) => {
             this.getRoomInfo(roomInfo);
+            if (roomInfo.white && roomInfo.black) { // when a watcher enters room
+                this.props.setPlayerStatus(roomInfo.white + '   V.S.   ' + roomInfo.black);
+            }
         });
         this.props.socket.on(`updateBoard${this.props.roomID}`, (roomInfo) => {
             this.updateBoard(roomInfo);
@@ -101,11 +104,12 @@ export default class Room extends Component {
     }
 
     render() {
+        let status = this.props.role === 'watcher' ? null : <div className="f5 ff-ubuntu">{this.state.status}</div>;
         return (
             <div className="w-100 h-100">
                 <Board grids={this.state.grids} onClick={(i)=>this.handleClick(i)} reverse={false} />
                 <div className="pv2 f4 ff-ubuntu">Turn: {this.state.turn}</div>
-                <div className="f5 ff-ubuntu">{this.state.status}</div>
+                {status}
             </div>
         );
     }

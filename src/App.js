@@ -20,6 +20,9 @@ class App extends Component {
         if (e.target.value !== '') {
             this.setState( {name: e.target.value} );
         }
+        else {
+            this.setState( {name: 'Player'} );
+        }
     }
 
     setRole = (role) => {

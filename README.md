@@ -37,3 +37,7 @@ functional css： https://tachyons.io \
 
 此外，為了要寫多人連線的邏輯，讓我對前後端的溝通了解不少。
 
+----
+### 螢幕截圖
+<img src=https://i.imgur.com/bIxDozf.png width="400"/>
+<img src=https://i.imgur.com/eaFGk09.png width="400"/>

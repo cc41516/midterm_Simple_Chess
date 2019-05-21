@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({
 io.set('origins', '*:*');
 io.on('connection', function(socket) {
     console.log('connect!');
+    socket.on('error', (error) => {console.log(error)});
 
     socket.on('getEmptyRoomID', function() {
         seed = ((parseInt(seed) * 1213) % 9973).toString();
@@ -32,7 +33,8 @@ io.on('connection', function(socket) {
                 black: (roomInfo.role === 'black') ? roomInfo.name : null,
                 turn: 'white',
             };
-            console.log('server: room', seed, 'created');
+            console.log(`server: room ${roomInfo.roomID} is created.`);
+            console.log(`Player ${roomInfo.name} enters room${roomInfo.roomID}`)
             socket.emit(`createRoom${roomInfo.roomID}`, `Successfully create room${roomInfo.roomID}`)
         }
     });
@@ -51,6 +53,7 @@ io.on('connection', function(socket) {
                 role = 'white'
                 dataList[roomInfo.roomID].white = roomInfo.name;
             }
+            console.log(`Player ${roomInfo.name} enters room${roomInfo.roomID}.`);
             socket.emit(`joinRoom${roomInfo.roomID}`, `Successfully join room${roomInfo.roomID}.`, role);
             io.emit(`getPlayerNames${roomInfo.roomID}`, dataList[roomInfo.roomID].white, dataList[roomInfo.roomID].black);
         }
