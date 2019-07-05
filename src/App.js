@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 class App extends Component {
     constructor() {
         super();
-        this.socket = io('http://localhost:8080');
+        this.socket = io('https://simple-chess-project.herokuapp.com');
         this.state = {
             name: 'Player',
             role: null,

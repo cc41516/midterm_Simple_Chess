@@ -1,15 +1,18 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 let server = require('http').createServer(app);
 let io = require('socket.io')(server);
 let dataList = {};
 let seed = '1234';
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(express.static(path.join(__dirname, 'build')))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.get('/*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
 
 let getNextSeed = () => {
     while(dataList[seed]) {
