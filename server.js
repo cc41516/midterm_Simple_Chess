@@ -43,17 +43,14 @@ io.on('connection', function(socket) {
                 turn: 'white',
                 people: 1
             };
-            console.log(`server: room ${roomInfo.roomID} is created.`);
+            console.log(`Room ${roomInfo.roomID} is created.`);
             console.log(`Player ${roomInfo.name} enters room${roomInfo.roomID}`)
             socket.emit(`createRoom${roomInfo.roomID}`, `Successfully create room${roomInfo.roomID}`)
         }
     });
 
     socket.on('joinRoom', function(roomInfo) {
-        if (!dataList[roomInfo.roomID]) {
-            socket.emit('error', `Cannot find room${roomInfo.roomID}.`);
-        }
-        else {
+        if (dataList[roomInfo.roomID]) {
             roomID = roomInfo.roomID;
             dataList[roomID].people += 1;
 
@@ -71,16 +68,19 @@ io.on('connection', function(socket) {
             socket.emit(`joinRoom${roomInfo.roomID}`, `Successfully join room${roomInfo.roomID}.`, role);
             io.emit(`getPlayerNames${roomInfo.roomID}`, dataList[roomInfo.roomID].white, dataList[roomInfo.roomID].black);
         }
+        else {
+            socket.emit('error', `Cannot find room${roomInfo.roomID}.`);
+        }
     });
 
     socket.on('updateBoard', function(roomInfo) {
-        if (!dataList[roomInfo.roomID]) {
-            socket.emit('error', `Cannot find room${roomInfo.roomID}.`);
-        }
-        else {
+        if (dataList[roomInfo.roomID]) {
             dataList[roomInfo.roomID].grids = roomInfo.grids;
             dataList[roomInfo.roomID].turn = (dataList[roomInfo.roomID].turn === 'white') ? 'black' : 'white';
             io.emit(`updateBoard${roomInfo.roomID}`, dataList[roomInfo.roomID]);
+        }
+        else {
+            socket.emit('error', `Cannot find room${roomInfo.roomID}.`);
         }
     });
 
