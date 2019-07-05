@@ -32,5 +32,9 @@ export default class Room extends Component {
             </div>
         );
     }
+
+    componentWillUnmount = () => {
+        this.props.socket.off(`getPlayerNames${this.props.roomID}`);
+    }
     
 }

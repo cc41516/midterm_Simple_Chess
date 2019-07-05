@@ -113,4 +113,9 @@ export default class Room extends Component {
             </div>
         );
     }
+
+    componentWillUnmount = () => {
+        this.props.socket.off(`getRoomInfo${this.props.roomID}`);
+        this.props.socket.off(`updateBoard${this.props.roomID}`);
+    }
 }

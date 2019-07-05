@@ -69,4 +69,8 @@ export default class Home extends Component {
         </div>
         );
     }
+
+    componentWillUnmount = () => {
+        this.props.socket.off('getEmptyRoomID');
+    }
 }

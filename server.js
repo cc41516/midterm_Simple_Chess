@@ -4,21 +4,30 @@ const app = express();
 let server = require('http').createServer(app);
 let io = require('socket.io')(server);
 let dataList = {};
-let seed = '1';
+let seed = '1234';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+let getNextSeed = () => {
+    while(dataList[seed]) {
+        seed = (parseInt(seed) * 1213 % 9973).toString();
+    }
+    return seed;
+}
+
 io.set('origins', '*:*');
 io.on('connection', function(socket) {
     console.log('connect!');
+    let roomID;
+
     socket.on('error', (error) => {console.log(error)});
 
     socket.on('getEmptyRoomID', function() {
-        seed = ((parseInt(seed) * 1213) % 9973).toString();
-        socket.emit('getEmptyRoomID', seed);
+        roomID = getNextSeed();
+        socket.emit('getEmptyRoomID', roomID);
     })
 
     socket.on('createRoom', function(roomInfo) {
@@ -32,6 +41,7 @@ io.on('connection', function(socket) {
                 white: (roomInfo.role === 'white') ? roomInfo.name : null,
                 black: (roomInfo.role === 'black') ? roomInfo.name : null,
                 turn: 'white',
+                people: 1
             };
             console.log(`server: room ${roomInfo.roomID} is created.`);
             console.log(`Player ${roomInfo.name} enters room${roomInfo.roomID}`)
@@ -44,6 +54,9 @@ io.on('connection', function(socket) {
             socket.emit('error', `Cannot find room${roomInfo.roomID}.`);
         }
         else {
+            roomID = roomInfo.roomID;
+            dataList[roomID].people += 1;
+
             let role;
             if (dataList[roomInfo.roomID].white) {
                 role = 'black'
@@ -53,6 +66,7 @@ io.on('connection', function(socket) {
                 role = 'white'
                 dataList[roomInfo.roomID].white = roomInfo.name;
             }
+
             console.log(`Player ${roomInfo.name} enters room${roomInfo.roomID}.`);
             socket.emit(`joinRoom${roomInfo.roomID}`, `Successfully join room${roomInfo.roomID}.`, role);
             io.emit(`getPlayerNames${roomInfo.roomID}`, dataList[roomInfo.roomID].white, dataList[roomInfo.roomID].black);
@@ -73,6 +87,15 @@ io.on('connection', function(socket) {
     socket.on('getRoomInfo', function(roomID) {
         socket.emit(`getRoomInfo${roomID}`, dataList[roomID]);
     });
+
+    socket.on('disconnect', function() {
+        if (roomID) {
+            if (dataList[roomID]){
+                dataList[roomID].people -= 1;
+                if (dataList[roomID].people <= 0) delete dataList[roomID];
+            }
+        }
+    })
 });
 
 server.listen(process.env.PORT || 8080);

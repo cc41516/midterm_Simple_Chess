@@ -40,7 +40,6 @@ class App extends Component {
     }
 
     render () {
-        console.log('client', this.state);
         return (
             <BrowserRouter>
                 <div id="App">
